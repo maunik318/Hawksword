@@ -23,6 +23,7 @@ public class RealCode_Compress {
 	public static boolean isbuild = false; 
 	//might not be a good idea, but just for now i'm using two arrays
 	public static ArrayList<String> wordlist = new ArrayList<String>();
+	public static ArrayList<String> relatedWords;
 	public static ArrayList<Integer> offsetlist = new ArrayList<Integer>();
 
 	public static Pattern regex; 
@@ -31,7 +32,7 @@ public class RealCode_Compress {
 	public static BufferedReader brURL;
 	private static String curruntSearched;
 	public static String destinationLang;
-	
+
 	public RealCode_Compress()
 	{
 		INFILE = path+File.separator+"wiktionary";
@@ -143,7 +144,7 @@ public class RealCode_Compress {
 		}
 		return e;
 	}
-	
+
 	static ArrayList<word> search_primary_index(int offset, String key)
 	{
 		RandomAccessFile rin = null,rin1=null;
@@ -211,7 +212,7 @@ public class RealCode_Compress {
 		}
 		return result;
 	}
-	
+
 	public static String search(String keyword) //static
 	{
 		curruntSearched = keyword;
@@ -272,7 +273,7 @@ public class RealCode_Compress {
 		}
 		return lock;
 	}
-	
+
 	public static boolean spellSearch(String keyword){
 		int index=bsearch(keyword);
 		if(index > 0)	//in case the word is also there in previous block
@@ -283,7 +284,7 @@ public class RealCode_Compress {
 		}
 		return false;
 	}
-	
+
 	static ArrayList<String> matchingPrefixes(int offset, String key)
 	{
 		RandomAccessFile rin = null,rin1=null;
@@ -301,7 +302,7 @@ public class RealCode_Compress {
 			while(count < 30 && ( line=in.readLine() )!=null)
 			{
 				String[] word = line.split("#");
-				if (word[0].startsWith(key)) {
+				if (word[0].startsWith(key) && word[0].compareTo(key)!=0) {
 					if (!word[0].contentEquals(lastWord)) {
 						lastWord = word[0];
 						result.add(word[0]);
@@ -312,7 +313,7 @@ public class RealCode_Compress {
 				}
 				count++;
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -336,7 +337,7 @@ public class RealCode_Compress {
 		}
 		return result;
 	}
-	
+
 	public static ArrayList<String> realTimeSearch(String keyword){
 		ArrayList<String> matchingWords = new ArrayList<String>();
 		int index=bsearch(keyword);
@@ -347,7 +348,7 @@ public class RealCode_Compress {
 		}
 		return matchingWords;
 	}
-	
+
 	/* 
 	 * HTML tag parser
 	 */
@@ -560,32 +561,32 @@ public class RealCode_Compress {
 				"</head>" +
 				"<body>";
 
-		if(LookupActivity.isNetwork && false) {
-			try {
-				destinationLang = "hi"; // This will be removed 
-				url = new URL("http://www.syslang.com/frengly/controller?action=translateREST&src=en&dest=" +
-								destinationLang+"&text="+curruntSearched+"&username=chintanpandya89" +
-								"&password=bhargav_8fg");
-				URLConnection urlConnection = url.openConnection();
-				brURL = new BufferedReader(
-						new InputStreamReader(urlConnection.getInputStream()));
-				String temp="";
-				translatorText="";
-				while((temp = brURL.readLine()) !=null)
-					translatorText += temp;
-				brURL.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-			regex = Pattern.compile("<translation>(.*?)</translation>", Pattern.DOTALL);
-			matcher = regex.matcher(translatorText);
-			if (matcher.find()) {
-				String DataElements = matcher.group(1);
-				webText+=DataElements+"<br>";
-
-			}
-		}
+		//		if(LookupActivity.isNetwork && false) {
+		//			try {
+		//				destinationLang = "hi"; // This will be removed 
+		//				url = new URL("http://www.syslang.com/frengly/controller?action=translateREST&src=en&dest=" +
+		//								destinationLang+"&text="+curruntSearched+"&username=chintanpandya89" +
+		//								"&password=bhargav_8fg");
+		//				URLConnection urlConnection = url.openConnection();
+		//				brURL = new BufferedReader(
+		//						new InputStreamReader(urlConnection.getInputStream()));
+		//				String temp="";
+		//				translatorText="";
+		//				while((temp = brURL.readLine()) !=null)
+		//					translatorText += temp;
+		//				brURL.close();
+		//			} catch (Exception e) {
+		//				e.printStackTrace();
+		//			}
+		//
+		//			regex = Pattern.compile("<translation>(.*?)</translation>", Pattern.DOTALL);
+		//			matcher = regex.matcher(translatorText);
+		//			if (matcher.find()) {
+		//				String DataElements = matcher.group(1);
+		//				webText+=DataElements+"<br>";
+		//
+		//			}
+		//		}
 
 		if(result == null) {
 			webText += "Offline dictionary couldn't find this word.";
@@ -600,6 +601,17 @@ public class RealCode_Compress {
 				webText += "<li> " + giveHyperLinks(result.get(i).def);
 			}
 			webText +=	"</ol>";
+		}
+
+		relatedWords = realTimeSearch(curruntSearched);
+		if(relatedWords != null && relatedWords.size() !=0) {
+			webText += "<ol>" +
+					"<h3>Related words</h3>";
+			for (String word : relatedWords) {
+				webText += "<li>"+generateHyperlink(word, word);  
+
+			}
+			webText += "</ol>";
 		}
 		webText += "</body>" +
 				"</html>";
