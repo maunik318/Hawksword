@@ -23,6 +23,7 @@ public class SplashScreen extends Activity {
 	private String TAG = "SplashScreen"; 
 	private Thread splashTread;
 	private ProgressBar progressBar;
+	private String sharedText;;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -55,9 +56,19 @@ public class SplashScreen extends Activity {
 				} catch(InterruptedException e) {} 
 				finally {
 					finish();
-					Intent i = new Intent();
-					i.setClass(sPlashScreen, MenuActivity.class);
-					startActivity(i);
+					Bundle b = getIntent().getExtras(); 
+					if(b != null) {
+						sharedText = b.getString("share");
+						if(GlobalListActivity.isListProper(sharedText)) {
+							Intent i = new Intent();
+							i.setClass(sPlashScreen, GlobalListActivity.class);
+							startActivity(i);
+						}
+					} else {
+						Intent i = new Intent();
+						i.setClass(sPlashScreen, MenuActivity.class);
+						startActivity(i);
+					}
 				}
 			}
 		};

@@ -110,8 +110,12 @@ public class GlobalListActivity extends Activity {
 
 	void handleSendText(Intent intent) throws IOException {
 		String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
-		if (sharedText != null) {
-			isListProper(sharedText);
+		if (sharedText != null && !isListProper(sharedText)) {
+			Toast.makeText(this, "There is no Dictionary data available on sdcard, Starting Hawksword ...", Toast.LENGTH_LONG).show();
+			final Intent  splash = new Intent(getBaseContext(),SplashScreen.class);
+			splash.putExtra("share", sharedText);
+			startActivity(splash);
+			finish();
 		}
 	}
 
@@ -135,8 +139,8 @@ public class GlobalListActivity extends Activity {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
-		
 		/*TODO
 		 * if file is not there in the present location, tokenizer will be null. handle that case properly.
 		 */
