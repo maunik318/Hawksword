@@ -16,7 +16,7 @@
  limitations under the License.
  -->
 <resources>
-    <string name="app_name">Hawksword</string>
+    <string name="app_name">Hawksword Dictionary</string>
     <string name="template_user_agent" translatable="false">"%1$s/%2$s (Linux; Android)"</string>
     <string name="search_label">Dictionary search</string>
     <string name="search_hint">Define word</string>
