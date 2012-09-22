@@ -214,20 +214,39 @@ public class RealCode_Compress {
 		return result;
 	}
 
-	public static String search(String keyword) //static
-	{
+	private static ArrayList<word> searchProcedure(String keyword) {
 		curruntSearched = keyword;
-		int index=bsearch(keyword);
 		ArrayList<word> result = null;
+		int index = bsearch(keyword);
 		if(index > 0)	//in case the word is also there in previous block
 		{
 			index--;
-			result = search_primary_index(offsetlist.get(index),keyword); //can be made a class attribute
-			//System.out.println("---"+keyword+"---");
-			if(result == null && keyword.compareTo(keyword.toLowerCase()) != 0){
-				return search(keyword.toLowerCase());
-			}	
+			result = search_primary_index(offsetlist.get(index),keyword); //can be made a class attribute 
 		}
+		return result;
+	}
+
+	private static String firstCaps(String old) {
+		String newString = "";
+		if(old != null && old.length()>1) {
+			newString += (old.charAt(0)+"").toUpperCase()+old.substring(1).toLowerCase();
+		}
+		return newString;
+	}
+
+	public static String search(String keyword) //static
+	{
+		ArrayList<word> result = null;
+		result = searchProcedure(keyword);						//default search
+
+		if(result == null && keyword.compareTo(keyword.toLowerCase()) != 0) { //Handles cases like Ball to ball
+			result = searchProcedure(keyword.toLowerCase());
+		}
+
+		if(result == null && keyword.compareTo(firstCaps(keyword)) != 0) {	// Handles cases like INDIA to India
+			result = searchProcedure(firstCaps(keyword));
+		}
+
 		return generateWebText(result);	
 	}
 	static boolean spell_checker(int offset, String key)

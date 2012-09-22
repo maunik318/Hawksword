@@ -266,7 +266,7 @@ public class LookupActivity extends Activity implements AnimationListener, OnIni
 		final String action = getIntent().getAction();
 		if (Intent.ACTION_SEARCH.equals(action)) {
 			// Start query for incoming search request
-			query = getIntent().getStringExtra(SearchManager.QUERY);
+			query = getIntent().getStringExtra(SearchManager.QUERY).trim();
 			startNavigating(query, true);
 
 		} 
