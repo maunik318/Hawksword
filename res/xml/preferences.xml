@@ -24,10 +24,10 @@
 			android:entries="@array/capturemodes"
 			android:entryValues="@array/capturemodes" />
 
-		<ListPreference android:key="focus_mode"
-			android:title="Focus Mode"
-			android:entries="@array/focusmodes"
-			android:entryValues="@array/focusmodes" />
+<!-- 		<ListPreference android:key="focus_mode" -->
+<!-- 			android:title="Focus Mode" -->
+<!-- 			android:entries="@array/focusmodes" -->
+<!-- 			android:entryValues="@array/focusmodes" /> -->
 			
 		<!--<CheckBoxPreference android:key="preference_capture_continuous"
 			android:title="Continuous preview"
@@ -60,16 +60,16 @@
 	</PreferenceCategory>
  -->
 	<!-- ADVANCED SETTINGS -->
-	<PreferenceCategory android:title="Advanced settings">
+<!-- 	<PreferenceCategory android:title="Advanced settings"> -->
 
 	   <!--  <ListPreference android:key="preference_ocr_engine_mode"
 	        android:title="OCR engine"
 	        android:entries="@array/ocrenginemodes"
 	        android:entryValues="@array/ocrenginemodes"/>
 	     -->
-	    <CheckBoxPreference
-            android:key="preferences_play_beep"
-            android:title="Beep"/>
+<!-- 	    <CheckBoxPreference -->
+<!--             android:key="preferences_play_beep" -->
+<!--             android:title="Beep"/> -->
 	    <!-- 	    
         <EditTextPreference android:key="preference_character_blacklist"
             android:title="Character blacklist"/>
@@ -77,9 +77,9 @@
         <EditTextPreference android:key="preference_character_whitelist"
             android:title="Character whitelist"/>
              -->
-		<CheckBoxPreference
-		    android:key="preference_toggle_light"
-		    android:title="Light"/>
+<!-- 		<CheckBoxPreference -->
+<!-- 		    android:key="preference_toggle_light" -->
+<!-- 		    android:title="Light"/> -->
 
 <!-- 
 	    <ListPreference android:key="preference_page_segmentation_mode"
@@ -92,6 +92,6 @@
             android:title="Reversed camera image"
             android:summary="(For devices with only a front camera)"/>-->
 	    
-	</PreferenceCategory>
+<!-- 	</PreferenceCategory> -->
 	
 </PreferenceScreen>

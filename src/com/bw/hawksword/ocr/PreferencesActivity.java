@@ -89,7 +89,7 @@ OnSharedPreferenceChangeListener {
 		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
 		listPreferenceDictionaryMode = (ListPreference) getPreferenceScreen().findPreference(KEY_DICTIONARY_MODE);
-		listPreferenceFocusMode = (ListPreference) getPreferenceScreen().findPreference(KEY_FOCUS_MODE);
+//		listPreferenceFocusMode = (ListPreference) getPreferenceScreen().findPreference(KEY_FOCUS_MODE);
 		listPreferenceSourceLanguage = (ListPreference) getPreferenceScreen().findPreference(KEY_SOURCE_LANGUAGE_PREFERENCE);
 		listPreferenceTranslator = (ListPreference) getPreferenceScreen().findPreference(KEY_TRANSLATOR);    
 		listPreferenceOcrEngineMode = (ListPreference) getPreferenceScreen().findPreference(KEY_OCR_ENGINE_MODE);
@@ -162,10 +162,10 @@ OnSharedPreferenceChangeListener {
 			CaptureActivity.mode_chg = true;
 			CaptureActivity.btn_lock = false;
 		}
-		else if(key.equals(KEY_FOCUS_MODE)){
-			listPreferenceFocusMode.setSummary(sharedPreferences.getString(key, CaptureActivity.DEFAULT_FOCUS_MODE));
-
-		}
+//		else if(key.equals(KEY_FOCUS_MODE)){
+//			listPreferenceFocusMode.setSummary(sharedPreferences.getString(key, CaptureActivity.DEFAULT_FOCUS_MODE));
+//
+//		}
 
 	}
 
@@ -177,7 +177,7 @@ OnSharedPreferenceChangeListener {
 	protected void onResume() {
 		super.onResume();
 		listPreferenceDictionaryMode.setSummary(sharedPreferences.getString(KEY_DICTIONARY_MODE, CaptureActivity.DEFAULT_DICTIONARY_MODE));
-		listPreferenceFocusMode.setSummary(sharedPreferences.getString(KEY_FOCUS_MODE, CaptureActivity.DEFAULT_FOCUS_MODE));
+//		listPreferenceFocusMode.setSummary(sharedPreferences.getString(KEY_FOCUS_MODE, CaptureActivity.DEFAULT_FOCUS_MODE));
 		// Set up a listener whenever a key changes
 		getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
 	}

@@ -162,7 +162,7 @@ public class MenuActivity extends Activity {
 
 		//Cell-1
 		ImageView t1 = new ImageView(this);         
-		t1.setImageResource(R.drawable.menu_button_1);
+		t1.setImageResource(R.drawable.menu_button_3);
 		t1.setClickable(true);
 		t1.setBackgroundColor(Color.WHITE);
 		t1.setScaleType(ImageView.ScaleType.CENTER);
@@ -182,8 +182,7 @@ public class MenuActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				final Intent  camera = new Intent(getBaseContext(),CaptureActivity.class);
-				startActivity(camera);
+				onSearchRequested();
 			}
 		});
 
@@ -220,7 +219,7 @@ public class MenuActivity extends Activity {
 
 		//Cell-3
 		ImageView t3 = new ImageView(this);       
-		t3.setImageResource(R.drawable.menu_button_3);
+		t3.setImageResource(R.drawable.menu_button_4);
 		t3.setClickable(true);
 		t3.setScaleType(ImageView.ScaleType.CENTER);
 		t3.setBackgroundColor(Color.WHITE);
@@ -238,13 +237,23 @@ public class MenuActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				onSearchRequested();
+				if(clip_board.hasText()) {
+					final Intent  list = new Intent(getBaseContext(),GlobalListActivity.class);
+					if(GlobalListActivity.isListProper(clip_board.getText().toString())) {
+						startActivity(list);
+					} else {
+						Toast.makeText(MenuActivity.this, "There is no text in clipboard", Toast.LENGTH_SHORT).show();
+					}
+				}
+				else {
+					Toast.makeText(MenuActivity.this, "There is nothing in clipboard", Toast.LENGTH_SHORT).show();
+				}
 			}
 		});
 
 		//Cell-4
 		ImageView t4 = new ImageView(this);       	
-		t4.setImageResource(R.drawable.menu_button_4);
+		t4.setImageResource(R.drawable.favorite);
 		t4.setClickable(true);
 		t4.setFocusable(true);
 		t4.setScaleType(ImageView.ScaleType.CENTER);
@@ -262,17 +271,8 @@ public class MenuActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if(clip_board.hasText()) {
-					final Intent  list = new Intent(getBaseContext(),GlobalListActivity.class);
-					if(GlobalListActivity.isListProper(clip_board.getText().toString())) {
-						startActivity(list);
-					} else {
-						Toast.makeText(MenuActivity.this, "There is no text in clipboard", Toast.LENGTH_SHORT).show();
-					}
-				}
-				else {
-					Toast.makeText(MenuActivity.this, "There is nothing in clipboard", Toast.LENGTH_SHORT).show();
-				}
+				final Intent  favorite = new Intent(getBaseContext(),WordhistoryActivity.class);
+				startActivity(favorite);
 			}
 		});
 		row2.setMinimumHeight((menu_frame.getLayoutParams().width / 2));
@@ -396,7 +396,7 @@ public class MenuActivity extends Activity {
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
 		//Focus Mode
-		prefs.edit().putString(PreferencesActivity.KEY_FOCUS_MODE, CaptureActivity.DEFAULT_FOCUS_MODE).commit();
+		//prefs.edit().putString(PreferencesActivity.KEY_FOCUS_MODE, CaptureActivity.DEFAULT_FOCUS_MODE).commit();
 
 		// Dictionary Mode
 		prefs.edit().putString(PreferencesActivity.KEY_DICTIONARY_MODE, CaptureActivity.DEFAULT_DICTIONARY_MODE).commit();
@@ -414,7 +414,7 @@ public class MenuActivity extends Activity {
 		prefs.edit().putString(PreferencesActivity.KEY_OCR_ENGINE_MODE, CaptureActivity.DEFAULT_OCR_ENGINE_MODE).commit();
 
 		// Beep
-		prefs.edit().putBoolean(PreferencesActivity.KEY_PLAY_BEEP, CaptureActivity.DEFAULT_TOGGLE_BEEP).commit();
+		//prefs.edit().putBoolean(PreferencesActivity.KEY_PLAY_BEEP, CaptureActivity.DEFAULT_TOGGLE_BEEP).commit();
 
 		// Character blacklist
 		prefs.edit().putString(PreferencesActivity.KEY_CHARACTER_BLACKLIST, 
@@ -431,7 +431,7 @@ public class MenuActivity extends Activity {
 		prefs.edit().putBoolean(PreferencesActivity.KEY_REVERSE_IMAGE, CaptureActivity.DEFAULT_TOGGLE_REVERSED_IMAGE).commit();
 
 		// Light
-		prefs.edit().putBoolean(PreferencesActivity.KEY_TOGGLE_LIGHT, CaptureActivity.DEFAULT_TOGGLE_LIGHT).commit();
+		//prefs.edit().putBoolean(PreferencesActivity.KEY_TOGGLE_LIGHT, CaptureActivity.DEFAULT_TOGGLE_LIGHT).commit();
 	}
 	public void createFileForCount() {
 		try {
