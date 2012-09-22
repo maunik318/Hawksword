@@ -46,12 +46,12 @@ public class WordhistoryActivity extends Activity {
 		//Set tab
 		tabHost = (TabHost)findViewById(R.id.tabhost);
 		tabHost.setup();
-		TabSpec spec1 = tabHost.newTabSpec("History");
+		TabSpec spec1 = tabHost.newTabSpec("Favorite");
 		spec1.setContent(R.id.tab1);
-		spec1.setIndicator("History",getResources().getDrawable(android.R.drawable.ic_menu_recent_history));
-		TabSpec spec2 = tabHost.newTabSpec("Favourite");
+		spec1.setIndicator("Favorite",getResources().getDrawable(android.R.drawable.btn_star_big_on));
+		TabSpec spec2 = tabHost.newTabSpec("History");
 		spec2.setContent(R.id.tab2);
-		spec2.setIndicator("Favourite",getResources().getDrawable(android.R.drawable.btn_star_big_on));
+		spec2.setIndicator("History",getResources().getDrawable(android.R.drawable.ic_menu_recent_history));
 		tabHost.addTab(spec1);
 		tabHost.addTab(spec2);
 		
@@ -61,8 +61,8 @@ public class WordhistoryActivity extends Activity {
 	    //    MenuInflater inflater = getMenuInflater();
 	    //    inflater.inflate(R.menu.options_menu, menu);
 	    super.onCreateOptionsMenu(menu);
-	    menu.add(0, CLEAR_HID, 0, "Clear History").setIcon(android.R.drawable.ic_menu_delete);
-	    menu.add(1, CLEAR_FID, 1, "Clear Favourite").setIcon(android.R.drawable.ic_menu_delete);
+	    menu.add(1, CLEAR_HID, 1, "Clear History").setIcon(android.R.drawable.ic_menu_delete);
+	    menu.add(0, CLEAR_FID, 0, "Clear Favourite").setIcon(android.R.drawable.ic_menu_delete);
 	    return true;
 	}
 	@Override

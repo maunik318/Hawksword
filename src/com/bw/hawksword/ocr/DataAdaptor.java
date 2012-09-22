@@ -78,7 +78,7 @@ public class DataAdaptor {
 		Log.d(TAG, "Favourite WordData insert");
 
 		values.put(C_WORD, word);
-		values.put(C_CREATED_AT, myCalendar.get(Calendar.DATE) + "/" + myCalendar.get(Calendar.MONTH) + "/" + myCalendar.get(Calendar.YEAR) + ", " + date.getHours() +":"+ date.getMinutes());
+		values.put(C_CREATED_AT, date.getHours() +":" + (date.getMinutes() < 10 ? "0" : "") + date.getMinutes() + "    " + myCalendar.get(Calendar.DATE) + "/" + myCalendar.get(Calendar.MONTH) + "/" + myCalendar.get(Calendar.YEAR));
 		values.put(C_RATING, rating);
 
 		db.insert(TABLE, null, values);
@@ -92,7 +92,7 @@ public class DataAdaptor {
 		Log.d(TAG, "History WordData insert");
 
 		values.put(C_WORD, word);
-		values.put(C_CREATED_AT, myCalendar.get(Calendar.DATE) + "/" + myCalendar.get(Calendar.MONTH) + "/" + myCalendar.get(Calendar.YEAR) + ", " + date.getHours() +":"+ date.getMinutes());
+		values.put(C_CREATED_AT, date.getHours() +":" + (date.getMinutes() < 10 ? "0" : "") + date.getMinutes() + "    " + myCalendar.get(Calendar.DATE) + "/" + myCalendar.get(Calendar.MONTH) + "/" + myCalendar.get(Calendar.YEAR));
 		values.put(C_RATING, rating);
 
 		db.insert(TABLE, null, values);
