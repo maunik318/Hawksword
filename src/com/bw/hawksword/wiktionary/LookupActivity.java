@@ -177,13 +177,6 @@ public class LookupActivity extends Activity implements AnimationListener, OnIni
 		dictModes = getResources().getStringArray(R.array.capturemodes);
 		dictMode = prefs.getString(PreferencesActivity.KEY_DICTIONARY_MODE, dictModes[0]);
 		
-		final String action = getIntent().getAction();
-		if (Intent.ACTION_SEARCH.equals(action)) {
-			// Start query for incoming search request
-			query = getIntent().getStringExtra(SearchManager.QUERY);
-			startNavigating(query, true);
-
-		} 
 
 		Bundle b = getIntent().getExtras(); 
 		query = b.getString("ST"); 
@@ -269,13 +262,14 @@ public class LookupActivity extends Activity implements AnimationListener, OnIni
 			}
 
 		});
-		/* Checking for word that is already in History list, If it is then display message 
-		 */
-		//		if(wordData.lookUpHistory(query,"0")){
-		//			Toast.makeText(this_obj,"You have already searched this word before", Toast.LENGTH_SHORT).show();
-		//		}
-		// Prepare User-Agent string for wiki actions
 		ExtendedWikiHelper.prepareUserAgent(this);
+		final String action = getIntent().getAction();
+		if (Intent.ACTION_SEARCH.equals(action)) {
+			// Start query for incoming search request
+			query = getIntent().getStringExtra(SearchManager.QUERY);
+			startNavigating(query, true);
+
+		} 
 		// Handle incoming intents as possible searches or links
 		if(dictMode.equals("Offline"))
 		{
@@ -289,7 +283,6 @@ public class LookupActivity extends Activity implements AnimationListener, OnIni
 		{
 			//Fail....
 		}
-		// onSearchRequested();
 	}
 	@Override
 	protected void onResume() {

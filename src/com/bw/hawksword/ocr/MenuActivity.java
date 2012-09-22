@@ -74,17 +74,7 @@ public class MenuActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		
-		checkFirstLaunch();
-		if (isFirstLaunch) {
-			setDefaultPreferences();
-		}
-		setContentView(R.layout.menuactivity);
 		final String action = getIntent().getAction();
-		final Intent  list = new Intent(getBaseContext(),LookupActivity.class);
-		clip_board = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-		prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		r = new RealCode_Compress();
 		if (Intent.ACTION_SEARCH.equals(action)) {
 			// Start query for incoming search request
 			Intent  dict = new Intent(getBaseContext(),LookupActivity.class);
@@ -92,6 +82,16 @@ public class MenuActivity extends Activity {
 			startActivity(dict);
 			finish();
 		}
+		checkFirstLaunch();
+		if (isFirstLaunch) {
+			setDefaultPreferences();
+		}
+		setContentView(R.layout.menuactivity);
+		final Intent  list = new Intent(getBaseContext(),LookupActivity.class);
+		clip_board = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+		prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		r = new RealCode_Compress();
+		
 		prepareView();
 		FB = new AlertDialog.Builder(this);
 		// set the message to display
@@ -134,7 +134,6 @@ public class MenuActivity extends Activity {
 
 		createFileForCount();
 		updateCount();
-
 	}
 
 	public void prepareView() {
@@ -258,11 +257,11 @@ public class MenuActivity extends Activity {
 					if(GlobalListActivity.isListProper(clip_board.getText().toString())) {
 						startActivity(list);
 					} else {
-						Toast.makeText(MenuActivity.this, "There is no text in clipboard", Toast.LENGTH_LONG).show();
+						Toast.makeText(MenuActivity.this, "There is no text in clipboard", Toast.LENGTH_SHORT).show();
 					}
 				}
 				else {
-					Toast.makeText(MenuActivity.this, "There is nothing in clipboard", Toast.LENGTH_LONG).show();
+					Toast.makeText(MenuActivity.this, "There is nothing in clipboard", Toast.LENGTH_SHORT).show();
 				}
 			}
 		});

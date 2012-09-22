@@ -131,11 +131,15 @@ public class GlobalListActivity extends Activity {
 		r = new RealCode_Compress();
 		flag = false;
 		try {
-			tokenizer = new Tokenizer("/mnt/sdcard/Android/data/com.bw.hawksword.ocr/files/mounted/tessdata/stop_words");
+			tokenizer = new Tokenizer(MenuActivity.dataPath + File.separator + "tessdata" + File.separator + "stop_words");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		/*TODO
+		 * if file is not there in the present location, tokenizer will be null. handle that case properly.
+		 */
 		HashMap<String, Token> tokens = tokenizer.tokenize(rawText);
 		if(!tokens.isEmpty()){
 			for (String word : tokens.keySet()) {

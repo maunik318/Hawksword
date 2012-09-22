@@ -32,6 +32,11 @@ public class SplashScreen extends Activity {
 		final SplashScreen sPlashScreen = this;
 		// Start AsyncTask to install language data
 		File storageDirectory = getStorageDirectory();
+		if(storageDirectory == null) {
+			Toast.makeText(this, "This application requires storage device", Toast.LENGTH_LONG).show();
+			finish();
+			System.exit(0);
+		}
 		MenuActivity.dataPath = getStorageDirectory().toString();
 		progressBar = (ProgressBar)findViewById(R.id.progressBar1);
 		new DataInitAsyncTask(this).execute(storageDirectory.toString());

@@ -2,6 +2,9 @@ package com.bw.hawksword.ocr;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import com.bw.hawksword.ocr.camera.CameraManager;
 import com.bw.hawksword.ocr.language.LanguageCodeHelper;
@@ -30,6 +33,7 @@ import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 public class ScreenshotActivity extends Activity {
 
@@ -68,12 +72,12 @@ public class ScreenshotActivity extends Activity {
 		//sourceLanguageCodeOcr = languageCode;
 		//sourceLanguageCodeTranslation = LanguageCodeHelper.mapLanguageCode(languageCode);
 		//sourceLanguageReadable = LanguageCodeHelper.getOcrLanguageName(this, languageCode);
-		
-		
-//		// Initialize the OCR engine
-//		if (storageDirectory != null) {
-//			initOcrEngine(storageDirectory, sourceLanguageCodeOcr, sourceLanguageReadable);
-//		}
+
+
+		//		// Initialize the OCR engine
+		//		if (storageDirectory != null) {
+		//			initOcrEngine(storageDirectory, sourceLanguageCodeOcr, sourceLanguageReadable);
+		//		}
 		//screenshotManager = new CameraManager(getApplication());
 		//viewfinderView.setCameraManager(screenshotManager);
 		cropfinderView.setOnTouchListener(new View.OnTouchListener() {
@@ -149,184 +153,295 @@ public class ScreenshotActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				View content = findViewById(R.id.preview_view);
-				content.setDrawingCacheEnabled(true);
-				Bitmap bitmap = content.getDrawingCache();
-				ByteArrayOutputStream stream = new ByteArrayOutputStream();
-				bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-				byte[] byteArray = stream.toByteArray();
+				//View content = findViewById(R.id.frame_layout);
+				view = (View)findViewById(R.id.frame_layout);
+			    av= ScreenshotActivity.this;
 
-//				// Set up the indeterminate progress dialog box
-//				ProgressDialog indeterminateDialog = new ProgressDialog(getApplication());
-//				indeterminateDialog.setTitle("Please wait");    		
-//				// String ocrEngineModeName = activity.getOcrEngineModeName();
-//				//			    if (ocrEngineModeName.equals("Both")) {
-//				//			      indeterminateDialog.setMessage("Performing OCR using Cube and Tesseract...");
-//				//			    } else {
-//				indeterminateDialog.setMessage("Performing OCR using tesserect...");
-//				//			    }
-//				indeterminateDialog.setCancelable(false);
-//				indeterminateDialog.show();
-//
-//				// Asyncrhonously launch the OCR process
-//				PlanarYUVLuminanceSource source = buildLuminanceSource(byteArray, bitmap.getWidth(), bitmap.getHeight());
-//				new OcrRecognizeAsyncTask(ScreenshotActivity.this, baseApi, indeterminateDialog, source.renderCroppedGreyscaleBitmap()).execute();
+			    try {   
+			    takeScreenShot(av);
+			    }
+			    catch (Exception e) 
+			    { }
+
+//				content.setDrawingCacheEnabled(true);
+//				Bitmap bitmap = content.getDrawingCache();
+//				if (ensureSDCardAccess()) {
+//					String mScreenshotPath = Environment.getExternalStorageDirectory() + "/droidnova";
+//					File file = new File(mScreenshotPath + "/" + System.currentTimeMillis() + ".png");
+//					FileOutputStream fos;
+//					try {
+//						fos = new FileOutputStream(file);
+//						bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+//						fos.close();
+//					} catch (FileNotFoundException e) {
+//						Log.e("Panel", "FileNotFoundException", e);
+//					} catch (IOException e) {
+//						Log.e("Panel", "IOEception", e);
+//					}
+//				}
+				//				ByteArrayOutputStream stream = new ByteArrayOutputStream();
+				//				bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+				//				byte[] byteArray = stream.toByteArray();
+
+				//				// Set up the indeterminate progress dialog box
+				//				ProgressDialog indeterminateDialog = new ProgressDialog(getApplication());
+				//				indeterminateDialog.setTitle("Please wait");    		
+				//				// String ocrEngineModeName = activity.getOcrEngineModeName();
+				//				//			    if (ocrEngineModeName.equals("Both")) {
+				//				//			      indeterminateDialog.setMessage("Performing OCR using Cube and Tesseract...");
+				//				//			    } else {
+				//				indeterminateDialog.setMessage("Performing OCR using tesserect...");
+				//				//			    }
+				//				indeterminateDialog.setCancelable(false);
+				//				indeterminateDialog.show();
+				//
+				//				// Asyncrhonously launch the OCR process
+				//				PlanarYUVLuminanceSource source = buildLuminanceSource(byteArray, bitmap.getWidth(), bitmap.getHeight());
+				//				new OcrRecognizeAsyncTask(ScreenshotActivity.this, baseApi, indeterminateDialog, source.renderCroppedGreyscaleBitmap()).execute();
 			}
 		});
 
 		drawViewfinder();
 
 	}
-//	/**
-//	 * Requests initialization of the OCR engine with the given parameters.
-//	 * 
-//	 * @param storageRoot Path to location of the tessdata directory to use
-//	 * @param languageCode Three-letter ISO 639-3 language code for OCR 
-//	 * @param languageName Name of the language for OCR, for example, "English"
-//	 */
-//	private void initOcrEngine(File storageRoot, String languageCode, String languageName) {    
-//		isEngineReady = false;
-//		path = storageRoot;
-//		// Set up the dialog box for the thermometer-style download progress indicator
-////		if (dialog != null) {
-////			dialog.dismiss();
-////		}
-//		dialog = new ProgressDialog(this);
+	Activity av; 
+	View view;
+	public void takeScreenShot(Activity av) throws Exception 
+	{ 
+	    view =this.getWindow().getDecorView();
+	    //or
+	    //view =av.getWindow().getDecorView();
+
+	    view.setDrawingCacheEnabled(true); 
+	    view.buildDrawingCache(true);           
+
+	    Bitmap b1 = view.getDrawingCache();
+	    Rect frame = new Rect();
+	    this.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
+	    int statusBarHeight = frame.top;
+	    int width = this.getWindowManager().getDefaultDisplay().getWidth();
+	    int height = this.getWindowManager().getDefaultDisplay().getHeight();
+
+	    Bitmap b = Bitmap.createBitmap(view.getDrawingCache(), 0, statusBarHeight, width, height - statusBarHeight);
+	    view.destroyDrawingCache();
+
+	    FileOutputStream fos = null; 
+
+	    try 
+	    { 
+	        //File sddir = new File(path, name);
+	        File root = Environment.getExternalStorageDirectory();
+
+	        //s= sddir.toString();
+	        Toast.makeText(this, "path " + root, Toast.LENGTH_LONG).show();
+
+	        if (!root.exists()) 
+	        { 
+	            root.mkdirs(); 
+	        }               
+
+	        fos = new FileOutputStream(root+ "/Image" + "_" + "4" + ".jpeg");              
+
+	        if (fos != null) 
+	        { 
+	            b.compress(Bitmap.CompressFormat.JPEG, 90, fos); 
+	            fos.flush();
+	            fos.close();                  
+	        } 
+	    } 
+	    catch (Exception e) 
+	    { 
+	        Toast.makeText(this, "Exception " + e, Toast.LENGTH_LONG).show();
+	        Log.e("Exception occurred while moving image: ",  e.toString());
+	        e.printStackTrace();
+	    } 
+	} 
+//		private String mScreenshotPath = Environment.getExternalStorageDirectory() + "/droidnova";
+//		 
+//		public void saveScreenshot() {
+//		    if (ensureSDCardAccess()) {
+//		    	View content = (FrameLayout)findViewById(R.id.frame_layout);
+//		    	//View content = 
 //
-////		// If we have a language that only runs using Cube, then set the ocrEngineMode to Cube
-////		if (ocrEngineMode != TessBaseAPI.OEM_CUBE_ONLY) {
-////			for (String s : CUBE_REQUIRED_LANGUAGES) {
-////				if (s.equals(languageCode)) {
-////					ocrEngineMode = TessBaseAPI.OEM_CUBE_ONLY;
-////					SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-////					prefs.edit().putString(PreferencesActivity.KEY_OCR_ENGINE_MODE, getOcrEngineModeName()).commit();
-////				}
-////			}
-////		}
-////
-////		// If our language doesn't support Cube, then set the ocrEngineMode to Tesseract
-////		if (ocrEngineMode != TessBaseAPI.OEM_TESSERACT_ONLY) {
-////			boolean cubeOk = false;
-////			for (String s : CUBE_SUPPORTED_LANGUAGES) {
-////				if (s.equals(languageCode)) {
-////					cubeOk = true;
-////				}
-////			}
-////			if (!cubeOk) {
-//				ocrEngineMode = TessBaseAPI.OEM_TESSERACT_ONLY;
-//				SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-//				prefs.edit().putString(PreferencesActivity.KEY_OCR_ENGINE_MODE, getOcrEngineModeName()).commit();
-////			}
-////		}
-//
-//		// Display the name of the OCR engine we're initializing in the indeterminate progress dialog box
-//		indeterminateDialog = new ProgressDialog(this);
-//		indeterminateDialog.setTitle("Please wait");
-//		String ocrEngineModeName = getOcrEngineModeName();
-//		if (ocrEngineModeName.equals("Both")) {
-//			indeterminateDialog.setMessage("Initializing Cube and Tesseract OCR engines for " + languageName + "...");
-//		} else {
-//			indeterminateDialog.setMessage("Initializing " + ocrEngineModeName + " OCR engine for " + languageName + "...");
+//				content.setDrawingCacheEnabled(true);
+//				Bitmap bitmap = content.getDrawingCache();
+//		        //Bitmap bitmap = Bitmap.createBitmap(480, 800, Bitmap.Config.ARGB_8888);
+////		        Canvas canvas = new Canvas(bitmap);
+////		        doDraw(1, canvas);
+//		        File file = new File(mScreenshotPath + "/" + System.currentTimeMillis() + ".jpg");
+//		        FileOutputStream fos;
+//		        try {
+//		            fos = new FileOutputStream(file);
+//		            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+//		            fos.close();
+//		        } catch (FileNotFoundException e) {
+//		            Log.e("Panel", "FileNotFoundException", e);
+//		        } catch (IOException e) {
+//		            Log.e("Panel", "IOEception", e);
+//		        }
+//		    }
 //		}
-//		indeterminateDialog.setCancelable(false);
-//		indeterminateDialog.show();
 //
-////		if (handler != null) {
-////			handler.quitSynchronously();     
-////		}
-//
-//		// Start AsyncTask to install language data and init OCR
-//		baseApi = new TessBaseAPI();
-//		new OcrInitAsyncTask(this, baseApi, dialog, indeterminateDialog, languageCode, languageName, ocrEngineMode)
-//		.execute(storageRoot.toString());
-//	}
-//	/** Finds the proper location on the SD card where we can save files. */
-//	@SuppressLint("NewApi")
-//	private File getStorageDirectory() {
-//		//Log.d(TAG, "getStorageDirectory(): API level is " + Integer.valueOf(android.os.Build.VERSION.SDK_INT));
-//
-//		String state = null;
-//		try {
-//			state = Environment.getExternalStorageState();
-//		} catch (RuntimeException e) {
-//			Log.e(TAG, "Is the SD card visible?", e);
-//			showErrorMessage("Error", "Required external storage (such as an SD card) is unavailable.");
+//	private boolean ensureSDCardAccess() {
+//		String mScreenshotPath = Environment.getExternalStorageDirectory() + "/droidnova";
+//		File file = new File(mScreenshotPath);
+//		if (file.exists()) {
+//			return true;
+//		} else if (file.mkdirs()) {
+//			return true;
 //		}
-//
-//		if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-//
-//			// We can read and write the media
-//			//    	if (Integer.valueOf(android.os.Build.VERSION.SDK_INT) > 7) {
-//			// For Android 2.2 and above
-//
-//			try {
-//				return getExternalFilesDir(Environment.MEDIA_MOUNTED);
-//			} catch (NullPointerException e) {
-//				// We get an error here if the SD card is visible, but full
-//				Log.e(TAG, "External storage is unavailable");
-//				showErrorMessage("Error", "Required external storage (such as an SD card) is full or unavailable.");
-//			}
-//
-//
-//		} else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-//			// We can only read the media
-//			Log.e(TAG, "External storage is read-only");
-//			showErrorMessage("Error", "Required external storage (such as an SD card) is unavailable for data storage.");
-//		} else {
-//			// Something else is wrong. It may be one of many other states, but all we need
-//			// to know is we can neither read nor write
-//			Log.e(TAG, "External storage is unavailable");
-//			showErrorMessage("Error", "Required external storage (such as an SD card) is unavailable.");
-//		}
-//		return null;
+//		return false;
 //	}
-//	/**
-//	 * Displays an error message dialog box to the user on the UI thread.
-//	 * 
-//	 * @param title The title for the dialog box
-//	 * @param message The error message to be displayed
-//	 */
-//	void showErrorMessage(String title, String message) {
-//		new AlertDialog.Builder(this)
-//		.setTitle(title)
-//		.setMessage(message)
-//		.setOnCancelListener(new FinishListener(this))
-//		.setPositiveButton( "Done", new FinishListener(this))
-//		.show();
-//	}
-//	/**
-//	 * A factory method to build the appropriate LuminanceSource object based on the format
-//	 * of the preview buffers, as described by Camera.Parameters.
-//	 *
-//	 * @param data A preview frame.
-//	 * @param width The width of the image.
-//	 * @param height The height of the image.
-//	 * @return A PlanarYUVLuminanceSource instance.
-//	 */
-//	public PlanarYUVLuminanceSource buildLuminanceSource(byte[] data, int width, int height) {
-//		Rect rect = cropfinderView.getFramingRectInPreview();
-//		if (rect == null) {
-//			return null;
-//		}
-//		// Go ahead and assume it's YUV rather than die.
-//		return new PlanarYUVLuminanceSource(data, width, height, rect.left, rect.top,rect.width(), rect.height(), reverseImage);
-//	}
-//	//	public Bitmap toGrayscale(Bitmap bmpOriginal)
-//	//	{        
-//	//	    int width, height;
-//	//	    height = bmpOriginal.getHeight();
-//	//	    width = bmpOriginal.getWidth();    
-//	//
-//	//	    Bitmap bmpGrayscale = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
-//	//	    Canvas c = new Canvas(bmpGrayscale);
-//	//	    Paint paint = new Paint();
-//	//	    ColorMatrix cm = new ColorMatrix();
-//	//	    cm.setSaturation(0);
-//	//	    ColorMatrixColorFilter f = new ColorMatrixColorFilter(cm);
-//	//	    paint.setColorFilter(f);
-//	//	    c.drawBitmap(bmpOriginal, 0, 0, paint);
-//	//	    return bmpGrayscale;
-//	//	}
+	//	/**
+	//	 * Requests initialization of the OCR engine with the given parameters.
+	//	 * 
+	//	 * @param storageRoot Path to location of the tessdata directory to use
+	//	 * @param languageCode Three-letter ISO 639-3 language code for OCR 
+	//	 * @param languageName Name of the language for OCR, for example, "English"
+	//	 */
+	//	private void initOcrEngine(File storageRoot, String languageCode, String languageName) {    
+	//		isEngineReady = false;
+	//		path = storageRoot;
+	//		// Set up the dialog box for the thermometer-style download progress indicator
+	////		if (dialog != null) {
+	////			dialog.dismiss();
+	////		}
+	//		dialog = new ProgressDialog(this);
+	//
+	////		// If we have a language that only runs using Cube, then set the ocrEngineMode to Cube
+	////		if (ocrEngineMode != TessBaseAPI.OEM_CUBE_ONLY) {
+	////			for (String s : CUBE_REQUIRED_LANGUAGES) {
+	////				if (s.equals(languageCode)) {
+	////					ocrEngineMode = TessBaseAPI.OEM_CUBE_ONLY;
+	////					SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+	////					prefs.edit().putString(PreferencesActivity.KEY_OCR_ENGINE_MODE, getOcrEngineModeName()).commit();
+	////				}
+	////			}
+	////		}
+	////
+	////		// If our language doesn't support Cube, then set the ocrEngineMode to Tesseract
+	////		if (ocrEngineMode != TessBaseAPI.OEM_TESSERACT_ONLY) {
+	////			boolean cubeOk = false;
+	////			for (String s : CUBE_SUPPORTED_LANGUAGES) {
+	////				if (s.equals(languageCode)) {
+	////					cubeOk = true;
+	////				}
+	////			}
+	////			if (!cubeOk) {
+	//				ocrEngineMode = TessBaseAPI.OEM_TESSERACT_ONLY;
+	//				SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+	//				prefs.edit().putString(PreferencesActivity.KEY_OCR_ENGINE_MODE, getOcrEngineModeName()).commit();
+	////			}
+	////		}
+	//
+	//		// Display the name of the OCR engine we're initializing in the indeterminate progress dialog box
+	//		indeterminateDialog = new ProgressDialog(this);
+	//		indeterminateDialog.setTitle("Please wait");
+	//		String ocrEngineModeName = getOcrEngineModeName();
+	//		if (ocrEngineModeName.equals("Both")) {
+	//			indeterminateDialog.setMessage("Initializing Cube and Tesseract OCR engines for " + languageName + "...");
+	//		} else {
+	//			indeterminateDialog.setMessage("Initializing " + ocrEngineModeName + " OCR engine for " + languageName + "...");
+	//		}
+	//		indeterminateDialog.setCancelable(false);
+	//		indeterminateDialog.show();
+	//
+	////		if (handler != null) {
+	////			handler.quitSynchronously();     
+	////		}
+	//
+	//		// Start AsyncTask to install language data and init OCR
+	//		baseApi = new TessBaseAPI();
+	//		new OcrInitAsyncTask(this, baseApi, dialog, indeterminateDialog, languageCode, languageName, ocrEngineMode)
+	//		.execute(storageRoot.toString());
+	//	}
+	//	/** Finds the proper location on the SD card where we can save files. */
+	//	@SuppressLint("NewApi")
+	//	private File getStorageDirectory() {
+	//		//Log.d(TAG, "getStorageDirectory(): API level is " + Integer.valueOf(android.os.Build.VERSION.SDK_INT));
+	//
+	//		String state = null;
+	//		try {
+	//			state = Environment.getExternalStorageState();
+	//		} catch (RuntimeException e) {
+	//			Log.e(TAG, "Is the SD card visible?", e);
+	//			showErrorMessage("Error", "Required external storage (such as an SD card) is unavailable.");
+	//		}
+	//
+	//		if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+	//
+	//			// We can read and write the media
+	//			//    	if (Integer.valueOf(android.os.Build.VERSION.SDK_INT) > 7) {
+	//			// For Android 2.2 and above
+	//
+	//			try {
+	//				return getExternalFilesDir(Environment.MEDIA_MOUNTED);
+	//			} catch (NullPointerException e) {
+	//				// We get an error here if the SD card is visible, but full
+	//				Log.e(TAG, "External storage is unavailable");
+	//				showErrorMessage("Error", "Required external storage (such as an SD card) is full or unavailable.");
+	//			}
+	//
+	//
+	//		} else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+	//			// We can only read the media
+	//			Log.e(TAG, "External storage is read-only");
+	//			showErrorMessage("Error", "Required external storage (such as an SD card) is unavailable for data storage.");
+	//		} else {
+	//			// Something else is wrong. It may be one of many other states, but all we need
+	//			// to know is we can neither read nor write
+	//			Log.e(TAG, "External storage is unavailable");
+	//			showErrorMessage("Error", "Required external storage (such as an SD card) is unavailable.");
+	//		}
+	//		return null;
+	//	}
+	//	/**
+	//	 * Displays an error message dialog box to the user on the UI thread.
+	//	 * 
+	//	 * @param title The title for the dialog box
+	//	 * @param message The error message to be displayed
+	//	 */
+	//	void showErrorMessage(String title, String message) {
+	//		new AlertDialog.Builder(this)
+	//		.setTitle(title)
+	//		.setMessage(message)
+	//		.setOnCancelListener(new FinishListener(this))
+	//		.setPositiveButton( "Done", new FinishListener(this))
+	//		.show();
+	//	}
+	//	/**
+	//	 * A factory method to build the appropriate LuminanceSource object based on the format
+	//	 * of the preview buffers, as described by Camera.Parameters.
+	//	 *
+	//	 * @param data A preview frame.
+	//	 * @param width The width of the image.
+	//	 * @param height The height of the image.
+	//	 * @return A PlanarYUVLuminanceSource instance.
+	//	 */
+	//	public PlanarYUVLuminanceSource buildLuminanceSource(byte[] data, int width, int height) {
+	//		Rect rect = cropfinderView.getFramingRectInPreview();
+	//		if (rect == null) {
+	//			return null;
+	//		}
+	//		// Go ahead and assume it's YUV rather than die.
+	//		return new PlanarYUVLuminanceSource(data, width, height, rect.left, rect.top,rect.width(), rect.height(), reverseImage);
+	//	}
+	//	//	public Bitmap toGrayscale(Bitmap bmpOriginal)
+	//	//	{        
+	//	//	    int width, height;
+	//	//	    height = bmpOriginal.getHeight();
+	//	//	    width = bmpOriginal.getWidth();    
+	//	//
+	//	//	    Bitmap bmpGrayscale = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+	//	//	    Canvas c = new Canvas(bmpGrayscale);
+	//	//	    Paint paint = new Paint();
+	//	//	    ColorMatrix cm = new ColorMatrix();
+	//	//	    cm.setSaturation(0);
+	//	//	    ColorMatrixColorFilter f = new ColorMatrixColorFilter(cm);
+	//	//	    paint.setColorFilter(f);
+	//	//	    c.drawBitmap(bmpOriginal, 0, 0, paint);
+	//	//	    return bmpGrayscale;
+	//	//	}
 
 	@Override
 	protected void onResume() {
@@ -337,21 +452,21 @@ public class ScreenshotActivity extends Activity {
 	void drawViewfinder() {
 		cropfinderView.drawViewfinder();
 	}
-//	/**
-//	 * Returns a string that represents which OCR engine(s) are currently set to be run.
-//	 * 
-//	 * @return OCR engine mode
-//	 */
-//	String getOcrEngineModeName() {
-//		String ocrEngineModeName = "";
-//		String[] ocrEngineModes = getResources().getStringArray(R.array.ocrenginemodes);
-//		if (ocrEngineMode == TessBaseAPI.OEM_TESSERACT_ONLY) {
-//			ocrEngineModeName = ocrEngineModes[0];
-//		} else if (ocrEngineMode == TessBaseAPI.OEM_CUBE_ONLY) {
-//			ocrEngineModeName = ocrEngineModes[1];
-//		} else if (ocrEngineMode == TessBaseAPI.OEM_TESSERACT_CUBE_COMBINED) {
-//			ocrEngineModeName = ocrEngineModes[2];
-//		}
-//		return ocrEngineModeName;
-//	}
+	//	/**
+	//	 * Returns a string that represents which OCR engine(s) are currently set to be run.
+	//	 * 
+	//	 * @return OCR engine mode
+	//	 */
+	//	String getOcrEngineModeName() {
+	//		String ocrEngineModeName = "";
+	//		String[] ocrEngineModes = getResources().getStringArray(R.array.ocrenginemodes);
+	//		if (ocrEngineMode == TessBaseAPI.OEM_TESSERACT_ONLY) {
+	//			ocrEngineModeName = ocrEngineModes[0];
+	//		} else if (ocrEngineMode == TessBaseAPI.OEM_CUBE_ONLY) {
+	//			ocrEngineModeName = ocrEngineModes[1];
+	//		} else if (ocrEngineMode == TessBaseAPI.OEM_TESSERACT_CUBE_COMBINED) {
+	//			ocrEngineModeName = ocrEngineModes[2];
+	//		}
+	//		return ocrEngineModeName;
+	//	}
 }

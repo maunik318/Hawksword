@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.bw.hawksword.ocr.MenuActivity;
 import com.bw.hawksword.wiktionary.LookupActivity;
 
 public class RealCode_Compress {
@@ -19,7 +20,7 @@ public class RealCode_Compress {
 	INFILE_COM,
 	INFILE_COM_L1;
 	static String types[] = new String[100];
-	private String path = "mnt/sdcard/Android/data/com.bw.hawksword.ocr/files/mounted/tessdata";
+	//private String path = "mnt/sdcard/Android/data/com.bw.hawksword.ocr/files/mounted/tessdata";
 	public static boolean isbuild = false; 
 	//might not be a good idea, but just for now i'm using two arrays
 	public static ArrayList<String> wordlist = new ArrayList<String>();
@@ -35,10 +36,10 @@ public class RealCode_Compress {
 
 	public RealCode_Compress()
 	{
-		INFILE = path+File.separator+"wiktionary";
-		TYPESFILE= path+File.separator+"Types";
-		INFILE_COM= path+File.separator+"primary-index";
-		INFILE_COM_L1= path+File.separator+"secondary-index";
+		INFILE = MenuActivity.dataPath +File.separator + "tessdata" +File.separator + "wiktionary";
+		TYPESFILE= MenuActivity.dataPath +File.separator + "tessdata" +File.separator +"Types";
+		INFILE_COM= MenuActivity.dataPath +File.separator + "tessdata" +File.separator +"primary-index";
+		INFILE_COM_L1= MenuActivity.dataPath +File.separator + "tessdata" +File.separator +"secondary-index";
 		if(!isbuild) {
 			buildTypesHash();
 			fill_word_offset_list_lessIO();
