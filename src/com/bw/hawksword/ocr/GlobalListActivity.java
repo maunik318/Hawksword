@@ -44,10 +44,11 @@ public class GlobalListActivity extends Activity {
 	private String type;
 	private static RealCode_Compress r;
 	private SharedPreferences prefs;
-	private static ArrayList<String> preparedList;
+	public static ArrayList<String> preparedList;
 	private static boolean flag;
 	private ClipboardManager clipboard;
 	private GoogleAnalyticsTracker tracker; //For Google Analytics
+	public static int count;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +135,7 @@ public class GlobalListActivity extends Activity {
 		preparedList = new ArrayList<String>();
 		r = new RealCode_Compress();
 		flag = false;
+		count = 0;
 		try {
 			tokenizer = new Tokenizer(MenuActivity.dataPath + File.separator + "tessdata" + File.separator + "stop_words");
 		} catch (IOException e) {
@@ -149,6 +151,7 @@ public class GlobalListActivity extends Activity {
 			for (String word : tokens.keySet()) {
 				if(RealCode_Compress.spellSearch(word) || RealCode_Compress.spellSearch(word.toLowerCase())){
 					flag = true;
+					count++;
 					preparedList.add(word);
 				}
 			}

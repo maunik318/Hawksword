@@ -77,10 +77,20 @@ public class MenuActivity extends Activity {
 		final String action = getIntent().getAction();
 		if (Intent.ACTION_SEARCH.equals(action)) {
 			// Start query for incoming search request
-			Intent  dict = new Intent(getBaseContext(),LookupActivity.class);
-			dict.putExtra("ST",getIntent().getStringExtra(SearchManager.QUERY).trim());
-			startActivity(dict);
-			finish();
+			if(GlobalListActivity.isListProper(getIntent().getStringExtra(SearchManager.QUERY).trim())) {
+				if(GlobalListActivity.count == 1) {
+					Intent  lookupAct = new Intent(getBaseContext(),LookupActivity.class);
+					lookupAct.putExtra("ST",GlobalListActivity.preparedList.get(0));
+					startActivity(lookupAct);
+				} else {
+					Intent  globalAct = new Intent(getBaseContext(),GlobalListActivity.class);
+					startActivity(globalAct);
+				}
+				finish();
+			} else {
+				Toast.makeText(MenuActivity.this, "Result not found", Toast.LENGTH_SHORT).show();
+			}
+			//dict.putExtra("ST",getIntent().getStringExtra(SearchManager.QUERY).trim());
 		}
 		checkFirstLaunch();
 		if (isFirstLaunch) {
