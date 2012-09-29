@@ -164,7 +164,7 @@ public class GlobalListActivity extends Activity {
 		TableRow row;
 
 		//Converting to dip unit
-		int dip = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,(float) 1, getResources().getDisplayMetrics());
+		float dip = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,(float) 1, getResources().getDisplayMetrics());
 
 		TableLayout.LayoutParams tableRowParams = new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT,TableLayout.LayoutParams.WRAP_CONTENT);
 		int leftMargin=1;
@@ -182,11 +182,11 @@ public class GlobalListActivity extends Activity {
 			t2.setTextColor(getResources().getColor(R.color.Black));    
 			t2.setText(word);
 			t2.setTypeface(null, 0);
-			t2.setTextSize(18 * dip);
+			t2.setTextSize(18);
 			t2.setGravity(17);
-			t2.setWidth(150 * dip);
+			t2.setWidth((int)( 150 * dip * 1000 )/1000);
 			//row.setPadding(1, 0, 1, 0);
-			row.setMinimumHeight(75 * dip);
+			row.setMinimumHeight((int)( 50 * dip * 1000 )/1000);
 			row.setBackgroundColor(Color.WHITE);
 			t2.setBackgroundDrawable(t2.getContext().getResources().getDrawable(R.drawable.grid_glow));
 			row.addView(t2);
