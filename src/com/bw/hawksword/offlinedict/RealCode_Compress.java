@@ -294,7 +294,7 @@ public class RealCode_Compress {
 		return lock;
 	}
 
-	public static boolean spellSearch(String keyword){
+	public static boolean spellSearchProcedure(String keyword){
 		int index=bsearch(keyword);
 		if(index > 0)	//in case the word is also there in previous block
 		{
@@ -305,6 +305,22 @@ public class RealCode_Compress {
 		return false;
 	}
 
+	public static boolean spellSearch(String keyword) //static
+	{
+		boolean result = false;
+		result = spellSearchProcedure(keyword);						//default search
+
+		if(result == false && keyword.compareTo(keyword.toLowerCase()) != 0) { //Handles cases like Ball to ball
+			result = spellSearchProcedure(keyword.toLowerCase());
+		}
+
+		if(result == false && keyword.compareTo(firstCaps(keyword)) != 0) {	// Handles cases like INDIA to India
+			result = spellSearchProcedure(firstCaps(keyword));
+		}
+
+		return result;	
+	}
+	
 	static ArrayList<String> matchingPrefixes(int offset, String key)
 	{
 		RandomAccessFile rin = null,rin1=null;

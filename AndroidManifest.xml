@@ -19,7 +19,7 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.bw.hawksword.ocr"
-    android:installLocation="preferExternal"
+    android:installLocation="auto"
     android:versionCode="101"
     android:versionName="2.0.0" >
 
