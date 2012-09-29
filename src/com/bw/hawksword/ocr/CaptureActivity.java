@@ -427,7 +427,7 @@ ShutterButton.OnShutterButtonListener {
 				int currentX = (int) event.getX();
 				int currentY = (int) event.getY();
 				int maxX = width;
-				int maxY = ( height * 60 )/100;
+				int maxY = height;
 				int centerX = maxX/2;
 				int centerY = maxY/2;
 				try {
