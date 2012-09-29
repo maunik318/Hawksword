@@ -149,7 +149,7 @@ public class GlobalListActivity extends Activity {
 		HashMap<String, Token> tokens = tokenizer.tokenize(rawText);
 		if(!tokens.isEmpty()){
 			for (String word : tokens.keySet()) {
-				if(RealCode_Compress.spellSearch(word) || RealCode_Compress.spellSearch(word.toLowerCase())){
+				if(RealCode_Compress.spellSearch(word)){
 					flag = true;
 					count++;
 					preparedList.add(word);

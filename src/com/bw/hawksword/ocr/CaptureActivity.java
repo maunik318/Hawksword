@@ -908,7 +908,7 @@ ShutterButton.OnShutterButtonListener {
 		if(mode_chg)
 		{
 			linearLayout1.getLayoutParams().height = 70;
-			clearList();
+			//clearList();
 			mode_chg=false;
 		}
 	}
@@ -917,100 +917,100 @@ ShutterButton.OnShutterButtonListener {
 	 * @tokens String array of parsed result.
 	 * @author maunik318@gmail.com
 	 */
-	private void generateList(HashMap<String, Token> tokens)
-	{
-
-		TextView t2;
-		TableRow row;
-		boolean flag = true;
-		//Retriving OCR Mode Online/Offline
-
-		String[] dictModes = getResources().getStringArray(R.array.capturemodes);
-		final String dictMode = prefs.getString(PreferencesActivity.KEY_DICTIONARY_MODE, dictModes[0]);
-		int j=0;
-
-		//Converting to dip unit
-		int dip = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,(float) 1, getResources().getDisplayMetrics());
-
-		TableLayout.LayoutParams tableRowParams = new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT,TableLayout.LayoutParams.WRAP_CONTENT);
-		int leftMargin=1;
-		int topMargin=1;
-		int rightMargin=1;
-		int bottomMargin=1;
-
-		tableRowParams.setMargins(leftMargin, topMargin, rightMargin, bottomMargin);
-
-
-		//Generating List..
-		for (String word : tokens.keySet()) {
-			if(RealCode_Compress.spellSearch(word) || RealCode_Compress.spellSearch(word.toLowerCase())){
-				if(flag) {
-					clearList();
-					flag = false;
-				}
-				j++;
-				row = new TableRow(this);
-				t2 = new TextView(this);
-				t2.setTextColor(getResources().getColor(R.color.White));    	    		
-				t2.setText(word.toLowerCase());
-				t2.setTypeface(null, 2);
-				t2.setTextSize(25);
-				t2.setGravity(1);
-				t2.setWidth(150 * dip);
-				row.setPadding(1, 1, 1, 1);
-
-				row.setBackgroundColor(Color.BLACK);
-
-				t2.setBackgroundDrawable(t2.getContext().getResources().getDrawable(R.drawable.grid_glow));
-				row.addView(t2);
-				row.setClickable(true);
-				row.setFocusable(true);
-				row.setFocusableInTouchMode(true);
-				tbl_list.addView(row, tableRowParams);
-				t2.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View arg0) {
-						arg0.setSelected(true);
-						String currentText = ((TextView)arg0).getText().toString();
-						final Intent  dict = new Intent(getBaseContext(),LookupActivity.class);
-						dict.putExtra("ST",currentText);
-						dict.putExtra("Mode",dictMode);	
-						startActivity(dict);	
-						tracker.trackEvent( // Google Analytics 
-								"Word Lookup",  // Category
-								"From Camera",  // Action
-								currentText, // Label
-								1);  
-					}
-				});
-			}
-		}
-		if (j <= 4) {
-			linearLayout1.getLayoutParams().height = (int)( 70 + ( j * 54));
-		}
-		else {
-			linearLayout1.getLayoutParams().height = (int)(getWindowManager().getDefaultDisplay().getHeight() * 40)/100;
-		}
-		if(flag) {
-			Toast.makeText(this, "No Result found, Try again.", Toast.LENGTH_LONG).show();
-		}
-		else {
-			Animation slideUpList = AnimationUtils.loadAnimation(CaptureActivity.this,R.anim.slide_up_list);
-			Animation slideUpMenu = AnimationUtils.loadAnimation(CaptureActivity.this,R.anim.slide_up_menu);
-			linearLayout1.startAnimation(slideUpMenu);
-			frameLayout1.startAnimation(slideUpList);
-			frameLayout1.setVisibility(LinearLayout.VISIBLE);
-		}
-	}
-	/**
-	 * To clear generated List in TableView.
-	 * @auther:maunik318@gmail.com
-	 */
-	private void clearList()
-	{
-		//		linearLayout1.getLayoutParams().height = 70;
-		tbl_list.removeAllViews();
-	}
+//	private void generateList(HashMap<String, Token> tokens)
+//	{
+//
+//		TextView t2;
+//		TableRow row;
+//		boolean flag = true;
+//		//Retriving OCR Mode Online/Offline
+//
+//		String[] dictModes = getResources().getStringArray(R.array.capturemodes);
+//		final String dictMode = prefs.getString(PreferencesActivity.KEY_DICTIONARY_MODE, dictModes[0]);
+//		int j=0;
+//
+//		//Converting to dip unit
+//		int dip = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,(float) 1, getResources().getDisplayMetrics());
+//
+//		TableLayout.LayoutParams tableRowParams = new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT,TableLayout.LayoutParams.WRAP_CONTENT);
+//		int leftMargin=1;
+//		int topMargin=1;
+//		int rightMargin=1;
+//		int bottomMargin=1;
+//
+//		tableRowParams.setMargins(leftMargin, topMargin, rightMargin, bottomMargin);
+//
+//
+//		//Generating List..
+//		for (String word : tokens.keySet()) {
+//			if(RealCode_Compress.spellSearch(word) || RealCode_Compress.spellSearch(word.toLowerCase())){
+//				if(flag) {
+//					clearList();
+//					flag = false;
+//				}
+//				j++;
+//				row = new TableRow(this);
+//				t2 = new TextView(this);
+//				t2.setTextColor(getResources().getColor(R.color.White));    	    		
+//				t2.setText(word.toLowerCase());
+//				t2.setTypeface(null, 2);
+//				t2.setTextSize(25);
+//				t2.setGravity(1);
+//				t2.setWidth(150 * dip);
+//				row.setPadding(1, 1, 1, 1);
+//
+//				row.setBackgroundColor(Color.BLACK);
+//
+//				t2.setBackgroundDrawable(t2.getContext().getResources().getDrawable(R.drawable.grid_glow));
+//				row.addView(t2);
+//				row.setClickable(true);
+//				row.setFocusable(true);
+//				row.setFocusableInTouchMode(true);
+//				tbl_list.addView(row, tableRowParams);
+//				t2.setOnClickListener(new OnClickListener() {
+//					@Override
+//					public void onClick(View arg0) {
+//						arg0.setSelected(true);
+//						String currentText = ((TextView)arg0).getText().toString();
+//						final Intent  dict = new Intent(getBaseContext(),LookupActivity.class);
+//						dict.putExtra("ST",currentText);
+//						dict.putExtra("Mode",dictMode);	
+//						startActivity(dict);	
+//						tracker.trackEvent( // Google Analytics 
+//								"Word Lookup",  // Category
+//								"From Camera",  // Action
+//								currentText, // Label
+//								1);  
+//					}
+//				});
+//			}
+//		}
+//		if (j <= 4) {
+//			linearLayout1.getLayoutParams().height = (int)( 70 + ( j * 54));
+//		}
+//		else {
+//			linearLayout1.getLayoutParams().height = (int)(getWindowManager().getDefaultDisplay().getHeight() * 40)/100;
+//		}
+//		if(flag) {
+//			Toast.makeText(this, "No Result found, Try again.", Toast.LENGTH_LONG).show();
+//		}
+//		else {
+//			Animation slideUpList = AnimationUtils.loadAnimation(CaptureActivity.this,R.anim.slide_up_list);
+//			Animation slideUpMenu = AnimationUtils.loadAnimation(CaptureActivity.this,R.anim.slide_up_menu);
+//			linearLayout1.startAnimation(slideUpMenu);
+//			frameLayout1.startAnimation(slideUpList);
+//			frameLayout1.setVisibility(LinearLayout.VISIBLE);
+//		}
+//	}
+//	/**
+//	 * To clear generated List in TableView.
+//	 * @auther:maunik318@gmail.com
+//	 */
+//	private void clearList()
+//	{
+//		//		linearLayout1.getLayoutParams().height = 70;
+//		tbl_list.removeAllViews();
+//	}
 	/** Displays a pop-up message showing the name of the current OCR source language. */
 	void showLanguageName() {   
 		Toast toast = Toast.makeText(this, "OCR: " + sourceLanguageReadable, Toast.LENGTH_LONG);
